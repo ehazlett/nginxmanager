@@ -49,6 +49,9 @@ class TestNginxConfigParser(unittest.TestCase):
         self.assertTrue(not opts.has_key('error_log'))
         self.assertTrue(opts.has_key('pid'))
     
+    def testParseSection(self):
+        opts = self.nginx_parser.parse_section('http')
+
 if __name__ == '__main__':
     LOG_LEVEL=logging.ERROR
     LOG_FILE='tests.log'

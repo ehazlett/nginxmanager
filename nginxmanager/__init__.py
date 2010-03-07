@@ -28,9 +28,11 @@ class NginxConfigParser(object):
     '''Handles parsing Nginx config files'''
     def __init__(self, filename=None):
         self.__filename = filename
+        self._log = logging.getLogger('NginxConfigParser')
 
     def parse_global(self):
         '''Parses the 'global' nginx options'''
+        self._log.debug('Parsing global section...')
         f = open(self.__filename, 'r')
         cfg = f.read()
         f.close()
@@ -55,6 +57,19 @@ class NginxConfigParser(object):
                     elif l.find('}') > -1:
                         in_section = False
         return options
+    
+    def parse_section(self, section_name=None):
+        if not section_name:
+            self._log.error('You must specify a section name...')
+            return
+        '''Parses specified section'''
+        self._log.debug('Parsing %s section...' % (section_name))
+        f = open(self.__filename, 'r')
+        cfg = f.read()
+        f.close()
+        options = {}
+        # loop through and gather options
+        # TODO: finish...
 
 class NginxConfig(object):
     ''' 
@@ -64,7 +79,7 @@ class NginxConfig(object):
         self._log = logging.getLogger('NginxConfig')
         if not filename:
             self._log.error('You must specify a config filename...')
-            return False
+            return
         self.__filename = filename
         self.__global = {}
         self.__http = {}

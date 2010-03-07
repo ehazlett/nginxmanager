@@ -58,3 +58,6 @@ if __name__ == '__main__':
     op.add_option('-d', '--debug', dest='debug', action="store_true", default=False, help='Show debug')
     opts, args = op.parse_args()
     
+    setup_logging()
+    from nginxmanager import NginxConfigParser
+    ng = NginxConfigParser('../test/nginx.conf.default')
