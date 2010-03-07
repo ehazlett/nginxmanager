@@ -48,9 +48,18 @@ class TestNginxConfigParser(unittest.TestCase):
         self.assertTrue(opts.has_key('worker_processes'))
         self.assertTrue(not opts.has_key('error_log'))
         self.assertTrue(opts.has_key('pid'))
+
+    def testParseHttp(self):
+        opts = self.nginx_parser.parse_http()
+        self.assertTrue(opts.has_key('sendfile'))
+        self.assertTrue(opts.has_key('include'))
+        self.assertTrue(not opts.has_key('location'))
     
-    def testParseSection(self):
-        opts = self.nginx_parser.parse_section('http')
+    def testParseServers(self):
+        opts = self.nginx_parser.parse_servers()
+        for s in opts:
+            self.assertTrue(s.has_key('locations'))
+            [self.assertTrue(x.has_key('options')) for x in s['locations']]
 
 if __name__ == '__main__':
     LOG_LEVEL=logging.ERROR
