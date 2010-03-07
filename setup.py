@@ -18,7 +18,7 @@ setup(
     license = 'GPLv3',
     description = "Nginx Manager is a configuration management application for Nginx HTTP server.",
     author = 'Evan Hazlett',
-    author_email = 'ejhazlett@gmail.com',
+    author_email = 'evan.hazlett@lumentica.com',
     packages = find_packages(),
     include_package_data = True,
     zip_safe = False,
