@@ -43,33 +43,31 @@ class TestNginxConfigParser(unittest.TestCase):
         self.log = logging.getLogger('TestNginxConfigParser')
 
     def testParseGlobal(self):
-        opts = self.nginx_parser.parse_global()
+        opts = self.nginx_parser.get_global()
         self.assertTrue(opts.has_key('user'))
         self.assertTrue(opts.has_key('worker_processes'))
         self.assertTrue(not opts.has_key('error_log'))
         self.assertTrue(opts.has_key('pid'))
 
     def testParseHttp(self):
-        opts = self.nginx_parser.parse_http()
+        opts = self.nginx_parser.get_http()
         self.assertTrue(opts.has_key('sendfile'))
         self.assertTrue(opts.has_key('include'))
         self.assertTrue(not opts.has_key('location'))
     
     def testParseServers(self):
-        opts = self.nginx_parser.parse_servers()
+        opts = self.nginx_parser.get_servers()
         for s in opts:
             self.assertTrue(s.has_key('locations'))
             [self.assertTrue(x.has_key('options')) for x in s['locations']]
+    
+    def testParseUpstreams(self):
+        opts = self.nginx_parser.get_upstreams()
+        for u in opts:
+            self.assertTrue(u.has_key('name'))
+            self.assertTrue(u.has_key('options'))
 
 if __name__ == '__main__':
-    LOG_LEVEL=logging.ERROR
-    LOG_FILE='tests.log'
-    LOG_CONFIG=logging.basicConfig(level=LOG_LEVEL,
-        format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-        datefmt='%m-%d-%Y %H:%M:%S',
-        filename=LOG_FILE,
-        filemode='w')
-        
     # run tests
     unittest.main()
 
