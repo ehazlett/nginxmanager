@@ -58,18 +58,40 @@ class NginxConfigParser(object):
                         in_section = False
         return options
     
-    def parse_section(self, section_name=None):
-        if not section_name:
-            self._log.error('You must specify a section name...')
-            return
-        '''Parses specified section'''
-        self._log.debug('Parsing %s section...' % (section_name))
+    def parse_http(self):
+        '''Parses 'http' section'''
+        self._log.debug('Parsing http section...')
         f = open(self.__filename, 'r')
         cfg = f.read()
         f.close()
         options = {}
         # loop through and gather options
-        # TODO: finish...
+        in_http_section = False
+        in_section = False
+        subsection_count = 0
+        for l in cfg.split('\n'):
+            # skip commented sections and blank lines
+            if not l.strip().startswith('#'):
+                if l.strip() != '':
+                    # parse options
+                    if l.find('{') > -1 and l.find('http') > -1 and not in_section:
+                        in_http_section = True
+                    elif l.find('{') == -1 and in_http_section and subsection_count == 0:
+                        # check for final semi-colon
+                        if l.find('}') == -1:
+                            # remove semi-colons and parse
+                            op = l.replace(';','').split(None, 3)
+                            options[op[0]] = op[1:]
+                        else:
+                            in_http_section = False
+                    # found 'start' section tag; mark and ignore contents
+                    elif l.find('{') > -1:
+                        subsection_count += 1
+                    # found 'end' section marker
+                    elif l.find('}') > -1:
+                        subsection_count -= 1
+        return options
+
 
 class NginxConfig(object):
     ''' 
