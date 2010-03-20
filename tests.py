@@ -38,7 +38,7 @@ from nginxmanager import NginxConfigParser
 
 class TestNginxConfigParser(unittest.TestCase):
     def setUp(self):
-        self.filename = os.path.join('test', 'nginx.conf.default')
+        self.filename = os.path.join('test', 'nginx.conf')
         self.nginx_parser = NginxConfigParser(self.filename)
         self.log = logging.getLogger('TestNginxConfigParser')
 
