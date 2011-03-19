@@ -30,10 +30,12 @@ class NginxConfigParser(object):
         self._log = logging.getLogger('NginxConfigParser')
 
     def get_global(self):
-        '''Gets the 'global' nginx options
+        """
+        Gets the 'global' nginx options
 
         returns: Dict of option names with values
-        '''
+
+        """
         self._log.debug('Parsing global section')
         f = open(self.__filename, 'r')
         cfg = f.read()
@@ -62,10 +64,12 @@ class NginxConfigParser(object):
         return options
     
     def get_http(self):
-        '''Gets 'http' section
+        """
+        Gets 'http' section
         
         returns: Dict of option names with values
-        '''
+
+        """
         self._log.debug('Parsing http section')
         f = open(self.__filename, 'r')
         cfg = f.read()
@@ -101,7 +105,8 @@ class NginxConfigParser(object):
         return options
 
     def get_servers(self):
-        '''Gets all 'server' sections
+        """
+        Gets all 'server' sections
         
         returns: Dict containing options with values as well as Dict with location options and values.
 
@@ -118,7 +123,7 @@ class NginxConfigParser(object):
         >>> s[0]['locations']
         [{'name': '/', 'options': {'root': ['html']}}, {'name': '/50x.html', 'options': {'root': ['html']}}]
 
-        '''
+        """
         self._log.debug('Parsing server sections...')
         f = open(self.__filename, 'r')
         cfg = f.read()
@@ -188,7 +193,8 @@ class NginxConfigParser(object):
         return servers
 
     def get_upstreams(self):
-        '''Gets all 'upstream' sections
+        """
+        Gets all 'upstream' sections
         
         returns: Dict of upstream options (as separate Dict) with values
 
@@ -199,7 +205,7 @@ class NginxConfigParser(object):
         >>> s[0]
         {'name': 'my_upstream', 'options': [{'server': ['127.0.0.3:8001']}]}
 
-        '''
+        """
         self._log.debug('Parsing upstream sections...')
         f = open(self.__filename, 'r')
         cfg = f.read()
@@ -248,9 +254,10 @@ class NginxConfigParser(object):
         return upstreams
 
 class NginxConfig(object):
-    ''' 
-        Manages Nginx configurations
-    '''
+    """
+    Manages Nginx configurations
+
+    """
     def __init__(self, filename=None):
         self._log = logging.getLogger('NginxConfig')
         if not filename:
