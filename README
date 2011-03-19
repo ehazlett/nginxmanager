@@ -1,0 +1,17 @@
+Nginx Manager is a management library for the Nginx HTTP webserver and reverse proxy (http://wiki.nginx.org)
+
+Here's a quickstart:
+
+>>> from nginxmanager import NginxConfig
+>>> cfg = NginxConfig(filename='/etc/nginx/nginx.conf')
+>>> cfg.get_http()
+{'sendfile': ['on'], 'default_type': ['application/octet-stream'], 'keepalive_timeout': ['65'], 'gzip': ['on'], 'server_names_hash_bucket_size': ['128'], 'include': ['mime.types']}
+
+>>> cfg.get_servers()[0]
+{'error_page': ['500 502 503 504  /50x.html'], 'locations': [{'name': '/', 'options': {'index': ['index.html index.htm'], 'root': ['html']}}, {'name': '/subdir', 'options': {'proxy_pass': ['http://myupstream']}}, {'name': '/50x.html', 'options': {'root': ['html']}}], 'server_name': ['localhost myserver.mydomain.com'], 'listen': ['80']}
+
+>>> cfg.get_upstreams()[0]
+{'name': 'myupstream', 'options': [{'server': ['localhost:3000']}]}
+
+Forking encouraged!
+
